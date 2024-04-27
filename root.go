@@ -13,7 +13,7 @@ var rootCmd = &cobra.Command{
 	This client can retrieve available questions, post the given answers and also compares the user's score with other participants.`,
 }
 
-func Execute() {
+func execute() {
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -32,17 +32,17 @@ var getQuestionsCmd = &cobra.Command{
 	Use:   "get-questions",
 	Short: "Retrieve all questions",
 	Long:  `Retrieve all questions with their respective multiple choice answers`,
-	Run:   GetQuestions,
+	Run:   getQuestions,
 }
 
 var submitAnswersCmd = &cobra.Command{
 	Use:   "submit-answers",
 	Short: "Submit answers",
-	Run:   PostAnswers,
+	Run:   postAnswers,
 }
 
 var getUserStatisticsCmd = &cobra.Command{
 	Use:   "get-user-statistics",
 	Short: "Get user statistics",
-	Run:   GetUserStats,
+	Run:   getUserStats,
 }

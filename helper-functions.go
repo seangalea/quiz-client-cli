@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func GetQuestions(cmd *cobra.Command, args []string) {
+func getQuestions(cmd *cobra.Command, args []string) {
 	// external call
 	resp, err := http.Get(fmt.Sprintf("%s/questions", baseURL))
 	if err != nil {
@@ -46,7 +46,7 @@ func GetQuestions(cmd *cobra.Command, args []string) {
 	}
 }
 
-func PostAnswers(cmd *cobra.Command, args []string) {
+func postAnswers(cmd *cobra.Command, args []string) {
 	// obtain flags
 	user, _ := cmd.Flags().GetString("user")
 	numbers, _ := cmd.Flags().GetString("answers")
@@ -104,7 +104,7 @@ func PostAnswers(cmd *cobra.Command, args []string) {
 	fmt.Printf("Score: %d\n", respBody.Score)
 }
 
-func GetUserStats(cmd *cobra.Command, args []string) {
+func getUserStats(cmd *cobra.Command, args []string) {
 	// obtain flags
 	user, _ := cmd.Flags().GetString("user")
 
