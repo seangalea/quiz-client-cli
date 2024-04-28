@@ -38,11 +38,13 @@ var getQuestionsCmd = &cobra.Command{
 var submitAnswersCmd = &cobra.Command{
 	Use:   "submit-answers",
 	Short: "Submit answers",
+	Long:  `Submit answers in sequential order in a CSV format`,
 	Run:   postAnswers,
 }
 
 var getUserStatisticsCmd = &cobra.Command{
 	Use:   "get-user-statistics",
 	Short: "Get user statistics",
+	Long:  `Get a metric comparison to other quizzers`,
 	Run:   getUserStats,
 }
