@@ -45,6 +45,6 @@ To use the Quiz client, you can run 3 different commands:
     ```
     Example:
     ```bash
-    quiz-client-cli submit-answers -u john
+    quiz-client-cli get-user-statistics -u john
     ```
 
