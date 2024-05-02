@@ -66,12 +66,14 @@ func postAnswers(cmd *cobra.Command, args []string) {
 
 	// retrieve questions
 	questions := retrieveQuestions()
-	if len(numbers) > len(questions) {
-		log.Fatalf("Too many answers.")
-	}
 
 	// build request body
 	values := strings.Split(numbers, ",")
+
+	if len(values) > len(questions) {
+		log.Fatalf("Too many answers.")
+	}
+
 	answerMatrix := AnswerMatrix{}
 
 	for i, val := range values {
