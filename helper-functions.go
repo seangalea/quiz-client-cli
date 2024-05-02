@@ -12,7 +12,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func getQuestions(cmd *cobra.Command, args []string) {
+func retrieveQuestions() []Question {
+
 	// external call
 	resp, err := http.Get(fmt.Sprintf("%s/questions", baseURL))
 	if err != nil {
@@ -22,19 +23,23 @@ func getQuestions(cmd *cobra.Command, args []string) {
 
 	// check response status
 	if resp.StatusCode != http.StatusOK {
-		log.Print("Unexpected response status:", resp.Status)
-		return
+		log.Fatal("Unexpected response status:", resp.Status)
 	}
 
 	// deserialize response body into Questions
 	var respBody []Question
 	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		log.Print("Failed to decode response body:", err)
-		return
+		log.Fatal("Failed to decode response body:", err)
 	}
 
+	return respBody
+}
+
+func getQuestions(cmd *cobra.Command, args []string) {
+	questions := retrieveQuestions()
+
 	// output
-	for _, q := range respBody {
+	for _, q := range questions {
 		fmt.Printf("Q-%d: %s\n", q.ID, q.Query)
 		for i, ans := range q.Answers {
 			fmt.Printf("(%d)%s", i, ans)
@@ -59,6 +64,12 @@ func postAnswers(cmd *cobra.Command, args []string) {
 		log.Fatalf("At least one answer is required.")
 	}
 
+	// retrieve questions
+	questions := retrieveQuestions()
+	if len(numbers) > len(questions) {
+		log.Fatalf("Too many answers.")
+	}
+
 	// build request body
 	values := strings.Split(numbers, ",")
 	answerMatrix := AnswerMatrix{}
@@ -70,7 +81,7 @@ func postAnswers(cmd *cobra.Command, args []string) {
 			return
 		}
 
-		answerMatrix.Answers = append(answerMatrix.Answers, Answer{QuestionID: i, AnswerID: num})
+		answerMatrix.Answers = append(answerMatrix.Answers, Answer{QuestionID: questions[i].ID, AnswerID: num})
 	}
 	answerMatrixJSON, err := json.Marshal(answerMatrix)
 	if err != nil {
